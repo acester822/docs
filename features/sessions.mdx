@@ -1,16 +1,16 @@
 ---
-title: "Manage Multiple Chat Sessions in Hermes Agent"
+title: "Manage Multiple Chat Sessions in Hermes Agent for VS Code"
 sidebarTitle: "Sessions"
-description: "Run parallel Hermes Agent conversations, switch between them, rename or delete sessions, and carry prior context into new chats with session memory attachment."
+description: "Run parallel Hermes Agent conversations, switch between them, rename or delete sessions, and carry prior context into new chats with memory attachment."
 ---
 
 Hermes Agent supports multiple parallel chat sessions so you can keep separate conversations for different tasks — one for a bug you're debugging, another for a feature you're designing — without mixing context. Sessions are persisted locally and restored between VS Code restarts.
 
 ## Creating and switching sessions
 
-- Click **+ New** in the chat toolbar to open a fresh session.
+- Click **+ New** in the chat toolbar, or run **Hermes: New Chat** (`hermes.newChat`) from the Command Palette, to open a fresh session.
 - Each open session appears as a tab in the chat panel.
-- Click a tab to switch to that session.
+- Click a tab to switch to that session, or run **Hermes: Open Session Menu** (`hermes.openSessionMenu`) to browse and switch sessions from a picker.
 
 <Warning>
   If you switch sessions while a response is streaming, a confirmation prompt appears asking whether you want to stay in the current session or switch immediately. Switching mid-reply cancels the active stream.
@@ -35,7 +35,7 @@ When the agent resets — because you switched to a new session, changed the mod
 |---|---|
 | **Last 2** | The two most recent attachable messages (user and assistant turns) |
 | **Last 10** | The ten most recent attachable messages |
-| **All** | All attachable messages, truncated to a ~8 000-token budget if needed |
+| **All** | All attachable messages, truncated to fit within the context budget if needed |
 | **Custom** | A manual selection; clicking this enters multi-select mode so you can pick individual messages |
 | **None** | No prior context; the agent starts fresh |
 

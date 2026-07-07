@@ -1,7 +1,7 @@
 ---
-title: "Hermes Agent VS Code Command Reference"
+title: "Hermes Agent for VS Code: Command Palette Reference"
 sidebarTitle: "Commands"
-description: "Complete list of all Hermes Agent VS Code commands — open chat, send selections, manage sessions, apply diffs, and configure the extension from the Command Palette."
+description: "All Hermes Agent commands for VS Code — open chat, send selections, apply diffs, manage sessions, and configure from the Command Palette."
 ---
 
 Every Hermes command is available through the VS Code Command Palette. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS) to open the palette, then type **Hermes** to filter the list to only Hermes commands. You can also trigger many of these actions directly from the chat toolbar, the editor context menu, or inline CodeLens links above functions and classes.
@@ -19,7 +19,7 @@ Use these commands to open the chat panel, start new conversations, attach edito
 | Hermes: New Chat | `hermes.newChat` | Start a new conversation in the chat panel, clearing the current input and creating a fresh session. |
 | Hermes: Open Chat | `hermes.openChat` | Open or focus the Hermes chat sidebar. If the sidebar is already open, this brings it to the front. |
 | Hermes: Insert Selection into Chat | `hermes.sendSelection` | Send the text you have currently selected in the editor to the chat input, so you can ask questions about a specific snippet without copying and pasting. |
-| Hermes: Open Session Menu | `hermes.openSessionMenu` | Browse your saved sessions and switch between them. Session history is stored locally per profile. |
+| Open Session Menu | `hermes.openSessionMenu` | Browse your saved sessions and switch between them. Session history is stored locally per profile. |
 
 ## Code Actions
 
@@ -27,8 +27,8 @@ These commands pre-fill the chat input with a context-aware prompt about the fil
 
 | Command | ID | Description |
 |---|---|---|
-| Hermes: Ask about this file | `hermes.askAboutFile` | Pre-fill a prompt that asks Hermes to explain the purpose, structure, and risks of the currently active file. |
-| Hermes: Explain this function | `hermes.explainFunction` | Pre-fill a prompt to explain the selected function or class symbol in plain language. |
+| Ask Hermes about this file | `hermes.askAboutFile` | Pre-fill a prompt that asks Hermes to explain the purpose, structure, and risks of the currently active file. |
+| Explain this function | `hermes.explainFunction` | Pre-fill a prompt to explain the selected function or class symbol in plain language. |
 
 ## Diff Viewer
 
@@ -36,9 +36,9 @@ After Hermes proposes a code change, use these commands to inspect and apply it.
 
 | Command | ID | Description |
 |---|---|---|
-| Hermes: Show Diff | `hermes.showDiff` | Open a visual diff panel showing the current file's content alongside Hermes's proposed changes. |
-| Hermes: Preview Hermes Changes | `hermes.previewDiff` | Preview proposed changes as a read-only diff without touching the file on disk. |
-| Hermes: Apply Hermes Changes | `hermes.applyDiff` | Write the proposed changes to the file on disk, replacing the current content. |
+| Show Diff | `hermes.showDiff` | Open a visual diff panel showing the current file's content alongside Hermes's proposed changes. |
+| Preview Hermes Changes | `hermes.previewDiff` | Preview proposed changes as a read-only diff without touching the file on disk. |
+| Apply Hermes Changes | `hermes.applyDiff` | Write the proposed changes to the file on disk, replacing the current content. |
 
 ## Configuration
 
@@ -47,9 +47,9 @@ Use these commands to store credentials, open the dashboard, and adjust how the 
 | Command | ID | Description |
 |---|---|---|
 | Hermes: Set API Key | `hermes.setApiKey` | Securely store an API key in VS Code's built-in Secret Storage. The key is never written to settings files. |
-| Hermes: Open Control Center | `hermes.openControlCenter` | Open the embedded Hermes dashboard panel for agent configuration, tool permissions, and profile management — no browser required. |
-| Hermes: Open Settings | `hermes.openSettings` | Open the extension settings page, filtered to Hermes entries. In Cursor, use **More options → Settings** in the chat title bar instead of `Ctrl+,`. |
-| Hermes: Configure Environment | `hermes.configureEnvironment` | Apply the detected Hermes installation to extension settings or the system PATH. Available even when Hermes is already configured. |
+| Open Control Center | `hermes.openControlCenter` | Open the embedded Hermes dashboard panel for agent configuration, tool permissions, and profile management — no browser required. |
+| Settings | `hermes.openSettings` | Open the extension settings page, filtered to Hermes entries. In Cursor, use **More options → Settings** in the chat title bar instead of `Ctrl+,`. |
+| Environment configuration | `hermes.configureEnvironment` | Apply the detected Hermes installation to extension settings or the system PATH. Available even when Hermes is already configured. |
 
 ## Environment & Diagnostics
 
@@ -57,8 +57,18 @@ These commands help you verify your Hermes installation, inspect connection logs
 
 | Command | ID | Description |
 |---|---|---|
-| Hermes: Detect Environment | `hermes.detectEnvironment` | Scan for a Hermes installation using layered detection (L0–L5). Shows percentage progress in the toolbar. Checks `hermes --version` and ACP readiness, and auto-installs `agent-client-protocol` if it is missing. |
-| Hermes: Open Logs | `hermes.openLogs` | Open the ACP connection log output panel so you can inspect raw protocol messages and diagnose connection issues. |
-| Hermes: Reload Extension | `hermes.reloadExtension` | Reload the entire extension process. Use this when the chat UI becomes unresponsive or after making configuration changes. |
-| Hermes: Reload Session | `hermes.reloadSession` | Reload only the current ACP session without restarting the full extension. Useful for recovering from a stalled connection. |
-| Hermes: Check for Updates | `hermes.checkUpdate` | Check whether a newer version of the extension is available on the marketplace. |
+| Environment detection | `hermes.detectEnvironment` | Scan for a Hermes installation using layered detection (L0–L5). Shows percentage progress in the toolbar. Checks `hermes --version` and ACP readiness, and auto-installs `agent-client-protocol` if it is missing. |
+| Logs | `hermes.openLogs` | Open the ACP connection log output panel so you can inspect raw protocol messages and diagnose connection issues. |
+| Reload Extension | `hermes.reloadExtension` | Reload the entire extension process. Use this when the chat UI becomes unresponsive or after making configuration changes. |
+| Reload Current Session | `hermes.reloadSession` | Reload only the current ACP session without restarting the full extension. Useful for recovering from a stalled connection. |
+| Check for Updates | `hermes.checkUpdate` | Check whether a newer version of the extension is available on the marketplace. |
+
+## Help & About
+
+These commands open informational panels and documentation resources directly within VS Code.
+
+| Command | ID | Description |
+|---|---|---|
+| About | `hermes.openAbout` | Open the About panel showing the current extension version, publisher information, and links to the project repository. |
+| Help | `hermes.openHelp` | Open the Hermes help documentation panel inside VS Code. |
+| FAQ | `hermes.openFaq` | Open the FAQ modal covering common questions about session resets, model switching, profile changes, model list completeness, and bug reporting. |

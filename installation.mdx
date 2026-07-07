@@ -1,7 +1,7 @@
 ---
-title: "Install Hermes Agent Extension for VS Code"
+title: "Install the Hermes Agent Extension for VS Code or Cursor"
 sidebarTitle: "Installation"
-description: "Install the FTR10 Hermes VSCode extension from the VS Code Marketplace, Cursor, or Open VSX in three steps."
+description: "Install the FTR10 Hermes VSCode extension from the VS Code Marketplace, Cursor, or Open VSX, and verify your Hermes Agent connection."
 ---
 
 Installing FTR10 Hermes VSCode takes less than a minute. The extension is available on the VS Code Marketplace, Open VSX, and directly inside the Cursor editor. Once installed, the extension auto-detects your Hermes Agent binary and installs any remaining ACP dependencies on first connect — no manual pip commands required in most cases.
@@ -65,5 +65,5 @@ hermes acp --check
 This command reports exactly which dependencies are missing and what steps are needed to resolve them.
 
 <Tip>
-  Use the **Wrench menu → Environment detection** (the wrench icon in the Hermes toolbar) to run a full end-to-end scan of your Hermes install — `hermes --version`, `hermes acp --check`, and dependency status — all from inside VS Code. A progress indicator shows you where the scan is up to, and the results surface any actionable issues directly in the panel.
+  Use **Environment detection** (the search icon in the Hermes toolbar, or run **Hermes: Detect Environment** from the Command Palette) to run a full end-to-end scan of your Hermes install — `hermes --version`, `hermes acp --check`, and dependency status — all from inside VS Code. A progress indicator shows you where the scan is up to, and the results surface any actionable issues directly in the panel.
 </Tip>

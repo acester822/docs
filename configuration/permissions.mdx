@@ -1,5 +1,5 @@
 ---
-title: "Control What Hermes Agent Can Do with Permissions"
+title: "Hermes Agent Permission Modes for the VS Code Extension"
 sidebarTitle: "Permissions"
 description: "Use permission modes to decide how much autonomy Hermes Agent has — approve each action manually, auto-approve all, or deny all tool requests."
 ---
@@ -65,9 +65,9 @@ When a permission card appears in `manual` mode, you see up to four response but
 | Button | What it does |
 |---|---|
 | **Allow once** | Approves this specific request. The next time the same action is requested, the card appears again. |
-| **Allow for this session** | Approves this request and all future requests of the same type for the duration of the current session. |
-| **Deny** | Rejects this specific request. The agent receives a denial and may adjust its approach. |
-| **Always deny** | Rejects this request and all future requests of the same type permanently. |
+| **Allow for session** | Approves this request and all future requests of the same type for the duration of the current session. |
+| **Reject once** | Rejects this specific request. The agent receives a denial and may adjust its approach. |
+| **Always deny** | Rejects this request and all future requests of the same type for the remainder of the session. |
 
 Permission cards remain visible in the chat history after you respond, so you can scroll back and review what the agent was approved to do during a session. Cards are also persisted in local session storage, which means they reappear correctly if you reload the extension or VS Code window mid-session.
 

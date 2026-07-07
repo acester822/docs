@@ -1,7 +1,7 @@
 ---
 title: "Editor Tools Bridge: Give Hermes Your Editor Context"
 sidebarTitle: "Editor Tools"
-description: "The Editor Tools Bridge connects Hermes Agent to your VS Code workspace — letting the agent read files, check diagnostics, and understand your cursor position."
+description: "The Editor Tools Bridge connects Hermes Agent to your VS Code workspace — letting it read files, check diagnostics, and track your cursor position."
 ---
 
 The Editor Tools Bridge is an in-process MCP server called `vscode-editor-tools` that starts automatically when you begin a Hermes session. The agent queries it at runtime to understand your editor state — what file you have open, where your cursor is, what errors your language server is reporting — without you having to copy-paste anything.
@@ -14,12 +14,16 @@ The bridge exposes the following context to Hermes:
 |---|---|
 | **Active editor** | File path, language ID, cursor line and character, current selection, visible ranges, full file content (for files under 500 lines) |
 | **Open tabs** | Labels, file paths, language IDs, dirty (unsaved) state, pinned state |
+| **Open documents** | All in-memory document buffers, including language ID, dirty state, and content for documents under 1,000 lines |
 | **Diagnostics** | Errors and warnings from every language server active in the workspace, including severity, message, file, and line range |
 | **Workspace files** | Read and write any file within the open workspace folders |
 | **Workspace structure** | Directory tree, workspace folder paths, and default language setting |
+| **Cursor surroundings** | The code above and below your cursor (configurable window, default ±20 lines) |
 | **Git status** | Current branch, staged changes, and working-tree changes (via the built-in Git extension) |
 | **Symbol outline** | Classes, functions, and variables for any file (via the document symbol provider) |
-| **References and definitions** | Find usages and jump-to-definition results for the symbol under the cursor |
+| **References** | Find all usages of the symbol at the cursor across the codebase |
+| **Definitions** | Jump-to-definition results for the symbol at the cursor |
+| **Terminals** | Names of the active and all open terminal sessions |
 
 <Note>
   Files over 500 lines send only metadata (path, language ID, and line count) rather than full content. The agent uses the metadata to understand the file's context and can request specific line ranges with the `read_file` tool if it needs a particular section.
@@ -38,6 +42,8 @@ Beyond reading context, the agent can read and write files inside your workspace
 - **`read_file`** — reads any workspace file by path, with optional start and end line arguments for large files.
 - **`apply_diff`** — writes new content to a file immediately, without a review step.
 - **`propose_diff`** — shows the proposed change as a visual diff with inline decorations (red for removed lines, green for added lines) before anything is saved, and waits for your approval.
+- **`accept_diff`** — accepts the currently pending diff and saves the file with the proposed changes.
+- **`reject_diff`** — rejects the pending diff and reverts the file to its original content.
 
 Whether the agent uses `apply_diff` or `propose_diff` — and whether it asks for confirmation before doing so — is controlled by the **`hermes.permissionMode`** setting (`auto` / `confirm` / `manual`). See the permissions documentation for the full breakdown.
 

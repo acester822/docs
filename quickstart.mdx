@@ -1,7 +1,7 @@
 ---
-title: "Get Started with Hermes Agent in VS Code"
+title: "Get Started with Hermes Agent in VS Code in 5 Minutes"
 sidebarTitle: "Quick Start"
-description: "Set your API key, open the chat panel, and have your first conversation with Hermes Agent in under five minutes."
+description: "Set your API key, open the Hermes chat panel, and send your first message to Hermes Agent — the whole process takes under five minutes."
 ---
 
 This guide walks you through everything you need to go from a fresh extension install to a live conversation with Hermes Agent. The whole process takes under five minutes — most of that is the one-time initialization on first connect. By the end you will have sent your first message, seen a streamed response, and learned how to pull editor context directly into the chat.
@@ -32,7 +32,11 @@ This guide walks you through everything you need to go from a fresh extension in
   <Step title="Wait for Ready">
     Watch the status pill at the top of the chat panel. It starts at **Connecting…**, moves to **Initializing…**, and finally turns green and reads **Ready**.
 
-    On first run, initialization can take **1–3 minutes** while Hermes loads its plugins and checks ACP dependencies. Subsequent starts are faster. If the status stays stuck on **Connecting…**, open the Wrench menu and run **Environment detection** to diagnose the issue.
+    On first run, initialization can take **1–3 minutes** while Hermes loads its plugins and checks ACP dependencies. Subsequent starts are faster. If the status stays stuck on **Connecting…**, run **Hermes: Detect Environment** from the Command Palette (or click the search icon in the Hermes toolbar) to diagnose the issue.
+  </Step>
+
+  <Step title="Explore the Control Center">
+    Open the embedded Hermes dashboard by clicking the dashboard icon in the Hermes toolbar, or run **Hermes: Open Control Center** from the Command Palette. The Control Center lets you select the active model, configure tool permissions, import or export profiles, and preview the system prompt — all without leaving VS Code.
   </Step>
 
   <Step title="Send your first message">
@@ -54,6 +58,8 @@ This guide walks you through everything you need to go from a fresh extension in
     Select any code in the editor, right-click, and choose **Hermes: Insert Selection into Chat**. The selected text is pasted into the message input so you can add a question before sending.
 
     You can also type `@` inside the chat input to open the workspace file picker and attach a specific file to your message.
+
+    When you are ready to start a fresh conversation, click the **+** button in the Hermes toolbar or run **Hermes: New Chat** from the Command Palette. Each new chat is saved as a separate session tab — you can rename, delete, or switch between sessions at any time.
   </Step>
 </Steps>
 

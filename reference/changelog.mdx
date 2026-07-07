@@ -1,7 +1,7 @@
 ---
-title: "Hermes Agent VS Code Extension Changelog"
+title: "Hermes Agent VS Code Extension Changelog and Release Notes"
 sidebarTitle: "Changelog"
-description: "Release notes for FTR10 Hermes VSCode — what's new, what's fixed, and what's changed in each version."
+description: "Version history and release notes for the Hermes Agent VS Code extension — features added, bugs fixed, and changes in every release."
 ---
 
 This page summarises every release of the FTR10 Hermes VSCode extension. Each entry follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) conventions and [Semantic Versioning](https://semver.org/spec/v2.0.0.html). For the full diff between any two versions, visit the [GitHub Releases page](https://github.com/acester822/FTR10-Hermes-VSCode/releases).
@@ -18,7 +18,7 @@ This page summarises every release of the FTR10 Hermes VSCode extension. Each en
 
 - **Connection stuck on Connecting… / Connection error.** Stream output is now accepted as soon as prompting starts. Superseded or cancelled prompts no longer leave the client in a blocked state, eliminating the most common cause of the "stuck Connecting" symptom.
 - **Cross-session stream bleed.** Session updates whose `sessionId` does not match the active session are silently ignored. Messages from a background session can no longer appear in the foreground chat.
-- **More robust content parsing.** Assistant and thought chunks now use `extractTextFromContentBlock` for reliable text extraction from ACP content blocks, fixing cases where partial or structured content blocks produced garbled output.
+- **More robust content parsing.** Text extraction from ACP content blocks is now more reliable, fixing cases where partial or structured content blocks produced garbled output.
 
 ---
 
@@ -61,8 +61,8 @@ This page summarises every release of the FTR10 Hermes VSCode extension. Each en
 ### Added
 
 - **Profile auto-discovery.** When `hermes.agents` is not configured, the extension runs `hermes profile list` to discover your Hermes profiles and surfaces them as a quick-switch selector in the toolbar — no manual ID juggling required.
-- **Profile-isolated storage.** Session history and model preferences are now stored per profile via `profileStorage`, so switching profiles gives you a clean slate for both chat history and model selection.
-- Hermes profile CLI arguments, ACP model catalog parsing, and grouped model display (`acpModelCatalog`, `hermesProfile`, `profileDiscovery`).
+- **Profile-isolated storage.** Session history and model preferences are now stored per profile, so switching profiles gives you a clean slate for both chat history and model selection.
+- Hermes profile CLI arguments, ACP model catalog parsing, and grouped model display.
 
 ### Fixed
 

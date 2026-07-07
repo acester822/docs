@@ -1,5 +1,5 @@
 ---
-title: "Chat with Your Code Using Hermes Agent"
+title: "Chat with Your Code Using the Hermes Agent in VS Code"
 sidebarTitle: "Chat"
 description: "Use the Hermes Agent chat panel in VS Code to ask questions, get code suggestions, and apply changes — all with real-time streaming responses."
 ---
@@ -27,7 +27,7 @@ Type your message in the input box at the bottom of the panel and press **Enter*
 
 ## Streaming responses
 
-Responses stream in real time and are rendered as Markdown with syntax-highlighted code blocks (powered by marked and highlight.js, sanitized with DOMPurify). The panel automatically scrolls to follow new output; scroll up manually at any time to pause auto-scroll, and it resumes after five seconds of inactivity while the response is still streaming.
+Responses stream in real time and are rendered as Markdown with syntax-highlighted code blocks. The panel automatically scrolls to follow new output; scroll up manually at any time to pause auto-scroll, and it resumes after five seconds of inactivity while the response is still streaming.
 
 File paths that Hermes mentions in a response are rendered as clickable links — click any path to open that file directly in the editor.
 
@@ -48,9 +48,9 @@ When Hermes suggests a shell command as part of a response, that command is auto
 To send code you're already looking at to Hermes:
 
 1. Select the code in your editor.
-2. Right-click and choose **Hermes: Insert Selection into Chat**.
+2. Right-click and choose **Hermes: Insert Selection into Chat**, or run the command `hermes.sendSelection` from the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`).
 
-The selected text is inserted into the chat input box so you can add context or a question before sending.
+The selected text — including the file name and line number — is inserted into the chat input box so you can add context or a question before sending.
 
 ## Thoughts and tool calls
 

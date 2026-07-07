@@ -1,7 +1,7 @@
 ---
-title: "Hermes Agent for VS Code: AI Coding Assistant"
+title: "Hermes Agent for VS Code: Your AI Coding Assistant"
 sidebarTitle: "Introduction"
-description: "FTR10 Hermes VSCode embeds Hermes Agent in your editor sidebar. Stream AI responses, apply code diffs, and control tools — without switching windows."
+description: "FTR10 Hermes VSCode brings Hermes Agent into your editor sidebar. Stream AI responses, apply code diffs, and control tools — without switching windows."
 ---
 
 FTR10 Hermes VSCode is a VS Code extension that brings [Hermes Agent](https://hermes-agent.nousresearch.com) into your editor sidebar. It connects to a local `hermes acp` subprocess over the [Agent Client Protocol (ACP)](https://agentclientprotocol.com) and renders a full chat surface — streaming replies, syntax-highlighted code, one-click diff application, and model switching — right inside VS Code or Cursor. The agent sees your editor state in real time through an in-process MCP server, so it can read and write workspace files, inspect your diagnostics, and act on your cursor position without you copying anything by hand.
@@ -26,7 +26,7 @@ FTR10 Hermes VSCode is a VS Code extension that brings [Hermes Agent](https://he
     Hermes profiles are detected from your config and exposed as a one-tap selector. No manual ID juggling.
   </Card>
   <Card title="Permission modes" icon="shield">
-    Choose `auto`, `confirm`, or `manual` to control how much the agent asks before it touches your system.
+    Choose `manual` (default), `autoApprove`, or `denyAll` to control how much the agent asks before it touches your system.
   </Card>
   <Card title="Diff viewer" icon="code-branch">
     Proposed changes render as a real diff. Preview the original versus the proposed version, then apply to disk with a single command.

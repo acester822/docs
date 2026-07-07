@@ -13,7 +13,7 @@ The typical flow for reviewing a Hermes-proposed change looks like this:
 1. **Hermes proposes a change.** During a chat session, the agent calls the `propose_diff` tool with the file path and new content. The file opens in the editor with inline decorations — red for removed lines, green for added lines — while the original content remains on disk.
 2. **The diff viewer opens.** VS Code's native diff panel shows the original file alongside the proposed version, giving you a side-by-side or inline view of every change.
 3. **You review the changes.** Scroll through the diff at your own pace. You can make additional edits in the proposed-content pane if needed.
-4. **Accept or discard.** Run **Hermes: Apply Hermes Changes** to write the proposed content to disk, or simply close the diff panel (or run **Hermes: Show Diff** on the original) to discard without touching the file.
+4. **Accept or discard.** Run **Hermes: Apply Hermes Changes** to write the proposed content to disk, or simply close the diff panel to discard without touching the file.
 
 ## Commands
 
@@ -28,5 +28,5 @@ Use any of the following commands from the Command Palette (`Ctrl+Shift+P` / `Cm
 All three commands are also accessible from the diff review bar that appears in the chat panel when a `propose_diff` is pending.
 
 <Tip>
-  If you are unsure about a change, simply don't run Apply — the original file is untouched until you explicitly accept. If you do apply a change and then change your mind, use **Ctrl+Z** (or **Cmd+Z**) in the editor to undo. Note that undoing after a save is reversible only while the file buffer is still open with undo history; once you close the file, the undo stack is lost.
+  If you are unsure about a change, simply close the diff panel without running Apply — the original file is untouched until you explicitly accept. If you do apply a change and then change your mind, use **Ctrl+Z** (or **Cmd+Z**) in the editor to undo. Note that undoing after a save is reversible only while the file buffer is still open with undo history; once you close the file, the undo stack is lost.
 </Tip>

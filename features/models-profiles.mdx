@@ -1,5 +1,5 @@
 ---
-title: "Switch AI Models and Hermes Profiles in VS Code"
+title: "Switch AI Models and Hermes Profiles in VS Code Extension"
 sidebarTitle: "Models & Profiles"
 description: "Browse available AI models with live per-token pricing, switch providers instantly, and select Hermes profiles — all from the chat toolbar."
 ---
@@ -8,7 +8,7 @@ The chat toolbar gives you direct control over which AI model Hermes uses and wh
 
 ## Choosing a model
 
-The model dropdown auto-populates from Hermes via ACP. The extension first requests the model list from the `model.options` endpoint; if that returns nothing, it falls back to `session/set_model` from the native session API. The result is a grouped list that refreshes each time you connect.
+The model dropdown auto-populates from Hermes when a session connects. Models are fetched from the running Hermes process and grouped by provider. If the live list is unavailable, the extension falls back to a static list you configure in settings.
 
 **What the list shows:**
 
@@ -35,7 +35,7 @@ Click the **Profile** selector to open the list and click a profile to switch to
 
 ## Fallback model list
 
-If Hermes is not running or does not expose models via ACP, the extension falls back to a static list you define in your VS Code settings. Configure it by adding the following to your `settings.json`:
+If Hermes is not running or does not expose models, the extension falls back to a static list you define in your VS Code settings. Configure it by adding the following to your `settings.json`:
 
 ```json
 "hermes.models": [
@@ -45,4 +45,4 @@ If Hermes is not running or does not expose models via ACP, the extension falls 
 "hermes.defaultModel": "claude-sonnet"
 ```
 
-The `hermes.defaultModel` value must match an `id` from the `hermes.models` array. The fallback list is only used when ACP does not return a model catalog; it is replaced by the live list as soon as a connection is established.
+The `hermes.defaultModel` value must match an `id` from the `hermes.models` array. The fallback list is only used when Hermes does not return a model catalog; it is replaced by the live list as soon as a connection is established.
