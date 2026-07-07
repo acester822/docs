@@ -1,0 +1,32 @@
+---
+title: "Preview and Apply Code Changes with the Diff Viewer"
+sidebarTitle: "Diff Viewer"
+description: "Review proposed code changes from Hermes Agent as a visual diff before applying them to your files — one command away from accepting or rejecting."
+---
+
+When Hermes Agent proposes a change to a file in your workspace, you don't have to accept it blindly. The diff viewer shows you exactly what would change — original content on the left, proposed content on the right — before anything is written to disk. You stay in control of every edit.
+
+## The diff workflow
+
+The typical flow for reviewing a Hermes-proposed change looks like this:
+
+1. **Hermes proposes a change.** During a chat session, the agent calls the `propose_diff` tool with the file path and new content. The file opens in the editor with inline decorations — red for removed lines, green for added lines — while the original content remains on disk.
+2. **The diff viewer opens.** VS Code's native diff panel shows the original file alongside the proposed version, giving you a side-by-side or inline view of every change.
+3. **You review the changes.** Scroll through the diff at your own pace. You can make additional edits in the proposed-content pane if needed.
+4. **Accept or discard.** Run **Hermes: Apply Hermes Changes** to write the proposed content to disk, or simply close the diff panel (or run **Hermes: Show Diff** on the original) to discard without touching the file.
+
+## Commands
+
+Use any of the following commands from the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) or from the chat interface:
+
+| Command | Command ID | What it does |
+|---|---|---|
+| **Hermes: Show Diff** | `hermes.showDiff` | Opens a visual diff panel comparing the original file with the proposed content |
+| **Hermes: Preview Hermes Changes** | `hermes.previewDiff` | Previews the proposed changes in a labeled diff panel (`Hermes: <filename>`) |
+| **Hermes: Apply Hermes Changes** | `hermes.applyDiff` | Writes the proposed changes to disk and saves the file immediately |
+
+All three commands are also accessible from the diff review bar that appears in the chat panel when a `propose_diff` is pending.
+
+<Tip>
+  If you are unsure about a change, simply don't run Apply — the original file is untouched until you explicitly accept. If you do apply a change and then change your mind, use **Ctrl+Z** (or **Cmd+Z**) in the editor to undo. Note that undoing after a save is reversible only while the file buffer is still open with undo history; once you close the file, the undo stack is lost.
+</Tip>

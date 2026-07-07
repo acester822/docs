@@ -1,0 +1,89 @@
+---
+title: "Hermes Agent VS Code Extension Changelog"
+sidebarTitle: "Changelog"
+description: "Release notes for FTR10 Hermes VSCode — what's new, what's fixed, and what's changed in each version."
+---
+
+This page summarises every release of the FTR10 Hermes VSCode extension. Each entry follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) conventions and [Semantic Versioning](https://semver.org/spec/v2.0.0.html). For the full diff between any two versions, visit the [GitHub Releases page](https://github.com/acester822/FTR10-Hermes-VSCode/releases).
+
+---
+
+## v0.3.2 — 2026-06-22
+
+### Added
+
+- **Hermes initialization hint.** If a prompt produces no output for 25 seconds, the status bar displays a message confirming that Hermes is still initializing. First replies can take 1–3 minutes while the plugin stack loads — the hint keeps you from assuming the connection is broken.
+
+### Fixed
+
+- **Connection stuck on Connecting… / Connection error.** Stream output is now accepted as soon as prompting starts. Superseded or cancelled prompts no longer leave the client in a blocked state, eliminating the most common cause of the "stuck Connecting" symptom.
+- **Cross-session stream bleed.** Session updates whose `sessionId` does not match the active session are silently ignored. Messages from a background session can no longer appear in the foreground chat.
+- **More robust content parsing.** Assistant and thought chunks now use `extractTextFromContentBlock` for reliable text extraction from ACP content blocks, fixing cases where partial or structured content blocks produced garbled output.
+
+---
+
+## v0.3.1 — 2026-06-22
+
+### Added
+
+- **Environment detection (L0–L5).** The wrench menu exposes a layered Hermes discovery scan that checks `hermes --version`, verifies ACP readiness, and shows compact percentage progress in the chat toolbar with expandable step details.
+- **ACP readiness check.** After Hermes is located, the extension runs `hermes acp --check`. If the check fails, it automatically attempts `pip install agent-client-protocol==0.9.0` and re-checks before reporting an error.
+- **Environment configuration.** A new wrench-menu entry lets you apply the detected Hermes installation to extension settings or the system PATH. The option is always available, even when Hermes is already configured.
+- **Smart detection trigger.** On connect, if Hermes is already configured in the extension or on the system PATH and passes a quick verification (including ACP), the full layered scan is skipped — keeping startup fast.
+- **Cancel detection.** Closing the progress bar during an in-progress environment scan now cleanly aborts the operation.
+
+### Fixed
+
+- **Cursor — Settings.** The **More → Settings** menu item now opens the VS Code Settings UI filtered to this extension. Previously it sometimes opened `settings.json` directly, which had no visible effect in Cursor.
+- **Windows PATH corruption.** Writing to the user PATH on Windows no longer corrupts existing entries due to JSON/PowerShell escaping bugs.
+- Detection summary and step titles now reflect the final completion state; completed steps show success icons instead of spinning indicators.
+
+---
+
+## v0.3.0 — 2026-06-21
+
+### Added
+
+- **Session memory attachment.** After an agent reset caused by a model or session switch, you can optionally attach prior messages as reference text to the next send. Choose the last 2 messages, last 10, all, or a custom selection — a preview and token estimate are shown before you commit.
+- **`hermes.contextAttachVisibility` setting.** Controls when the memory picker appears: `onNewSession` (default — shown after a reset until the first successful reply), `always`, or `never`.
+- **FAQ modal.** A new **More → FAQ** menu item opens a modal covering session reset behaviour, model and session switching, profile changes, model list completeness, updates, and bug reporting.
+- **Session reset divider.** A visual divider in the chat UI marks the point where messages were restored from local history. Restored messages are read-only from the agent's perspective — the agent does not retain that context unless Hermes itself supports session restore.
+- **Session switch confirmation.** If you switch to a different session tab while a reply is actively streaming, the extension now asks you to confirm before interrupting the current response.
+
+### Fixed
+
+- The model list now falls back to cached ACP options when a fresh fetch returns an empty list, preventing the dropdown from going blank after a reconnect.
+
+---
+
+## v0.2.6 — 2026-06-21
+
+### Added
+
+- **Profile auto-discovery.** When `hermes.agents` is not configured, the extension runs `hermes profile list` to discover your Hermes profiles and surfaces them as a quick-switch selector in the toolbar — no manual ID juggling required.
+- **Profile-isolated storage.** Session history and model preferences are now stored per profile via `profileStorage`, so switching profiles gives you a clean slate for both chat history and model selection.
+- Hermes profile CLI arguments, ACP model catalog parsing, and grouped model display (`acpModelCatalog`, `hermesProfile`, `profileDiscovery`).
+
+### Fixed
+
+- Selecting the **Default** profile now explicitly passes `--profile default` to the Hermes subprocess. Previously, launching without a profile argument followed Hermes's globally active profile, which caused the wrong default model to be shown.
+- The model list is now fetched **only via ACP**: the extension prefers `model.options` from Hermes and falls back to `models.availableModels` from the session. Reading `config.yaml` directly has been removed.
+- The model dropdown displays models grouped by provider, and the selected model correctly aligns with the profile's default as returned by ACP.
+- On reconnect and retry, the current profile shown in the chat UI is preserved instead of being reset from workspace settings.
+
+---
+
+## v0.2.5 — 2026-06-21
+
+### Added
+
+- **In-chat permission approval cards.** Permission requests from Hermes are now rendered as cards directly inside the WebView instead of appearing as VS Code warning message pop-ups. Each card offers approve/deny choices with session-level or permanent scope. Details are collapsed by default and expand when the content exceeds three lines.
+- **Approval history persistence.** Permission cards are written to the session message history, so they survive a WebView refresh or session switch as read-only records.
+- **MCP config forwarding.** The extension reads MCP server configurations from `~/.cursor/mcp.json` and from workspace-level `.cursor/mcp.json` and `.vscode/mcp.json`, then forwards them to Hermes on `session/new`.
+- **Smart scroll during streaming.** The chat view follows streaming output to the bottom by default. Scrolling manually pauses auto-scroll; it resumes automatically after 5 seconds of inactivity while a reply is still streaming.
+- **TOKEN ring percentage.** The token usage ring in the toolbar now displays your current usage as a percentage in its centre.
+
+### Fixed
+
+- After an approval card interaction or a tool call, subsequent assistant replies correctly start a new message segment instead of incorrectly appending to an existing bubble.
+- The `allow_session` permission option no longer incorrectly displays as "Always allow" — `optionId` now takes priority over the `kind` mapping when determining label text.

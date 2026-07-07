@@ -1,0 +1,65 @@
+---
+title: "Configure Multiple Hermes Agent Profiles"
+sidebarTitle: "Multiple Agents"
+description: "Define named agent configurations with different executables, working directories, and Hermes profiles — then switch between them from the chat toolbar."
+---
+
+The `hermes.agents` setting lets you define a list of named configurations that appear as a quick-switch selector in the chat toolbar. Each entry can point to a different Hermes executable, use a different profile, or scope its working directory to a different folder — without you having to edit settings each time you change contexts.
+
+## Why use multiple agents
+
+Different tasks benefit from different setups. You might want a lightweight profile for quick questions during day-to-day coding and a more capable (but slower or more expensive) profile for deep research or refactoring. Rather than editing `hermes.profile` back and forth, you define both once in `hermes.agents` and switch with a single click.
+
+A few practical examples:
+
+- **Fast** — A profile backed by a smaller model for quick explanations and one-off questions.
+- **Deep-dive** — A profile backed by a larger model with extended thinking for architecture reviews or complex debugging.
+- **Research** — A separate working directory scoped to a research project so the agent's file access is naturally sandboxed to that folder.
+- **Custom binary** — A development build of Hermes at a local path, used alongside the stable release on your `PATH`.
+
+## Configuration format
+
+Each agent entry is an object inside the `hermes.agents` array. The `name` field is required; all other fields are optional and fall back to your top-level `hermes.*` settings when omitted.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `name` | string | ✅ | Label shown in the agent selector dropdown. |
+| `path` | string | — | Path to the Hermes executable. Overrides `hermes.path`. |
+| `profile` | string | — | Hermes profile name. Overrides `hermes.profile`. |
+| `cwd` | string | — | Working directory. Overrides `hermes.cwd`. |
+
+### Example
+
+```json
+"hermes.agents": [
+  { "name": "Default", "profile": "" },
+  { "name": "Fast", "path": "/usr/local/bin/hermes", "profile": "fast" },
+  { "name": "Research", "profile": "research", "cwd": "/projects/research" }
+]
+```
+
+In this example:
+
+- **Default** uses whatever profile Hermes selects by default, with the binary auto-detected from `PATH`.
+- **Fast** pins the executable to an absolute path and switches to the `fast` profile.
+- **Research** uses the `research` profile and locks the working directory to `/projects/research`.
+
+## Switching agents
+
+When `hermes.agents` contains at least one entry, an agent selector appears in the chat toolbar next to the model and profile controls. Click it to open the dropdown and select a different configuration. The extension reconnects immediately using the new agent's settings — your current session is replaced with a fresh one.
+
+If you have only one entry in `hermes.agents` the selector is still shown, which can be useful as a visible label for the active configuration.
+
+## Profile auto-discovery
+
+If you leave `hermes.agents` empty (the default), the extension does not show the agent selector. Instead, it runs `hermes profile list` at startup and surfaces any discovered profiles in the **Profile** dropdown in the toolbar. Select a profile there to reconnect using that profile — no manual configuration required.
+
+Use `hermes.agents` when you need more than a profile change per agent (for example, a different binary path or working directory). Use the auto-discovered Profile dropdown when switching profiles alone is enough.
+
+<Tip>
+  Set a different `cwd` for each agent to scope file access to the relevant
+  project directory. The Editor Tools Bridge MCP server that the extension
+  registers uses the session working directory as its root, so an agent
+  configured with `"cwd": "/projects/api"` will only read and write files
+  under `/projects/api` unless you explicitly reference paths outside it.
+</Tip>

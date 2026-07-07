@@ -1,0 +1,80 @@
+---
+title: "Control What Hermes Agent Can Do with Permissions"
+sidebarTitle: "Permissions"
+description: "Use permission modes to decide how much autonomy Hermes Agent has — approve each action manually, auto-approve all, or deny all tool requests."
+---
+
+Hermes Agent can take actions on your behalf — reading and writing files in the workspace, running terminal commands, and calling tools exposed by MCP servers. Permissions control whether those actions happen immediately or only after you explicitly approve them. Choose a permission mode that matches how much autonomy you want to give the agent for the task at hand.
+
+## Permission modes
+
+<Tabs>
+  <Tab title="manual (default)">
+    In `manual` mode, Hermes pauses before every action that requires a
+    permission and displays a permission card in the chat. The card shows the
+    action name, the specific parameters being requested (for example, the file
+    path or command string), and a set of response buttons.
+
+    You must respond before the agent continues. If the permission card is not
+    answered within two minutes, the request is automatically denied and the
+    agent receives a rejection response.
+
+    This is the recommended mode when you are working in an unfamiliar codebase
+    or running an agent task for the first time.
+  </Tab>
+  <Tab title="autoApprove">
+    In `autoApprove` mode, all permission requests from Hermes are approved
+    automatically without any input from you. The permission card is briefly
+    shown in the chat as "approved" and then dismissed.
+
+    Use this mode when you trust the agent's behavior completely and want
+    uninterrupted execution — for example, when running a well-understood
+    automation in a sandboxed or disposable environment.
+  </Tab>
+  <Tab title="denyAll">
+    In `denyAll` mode, all permission requests are denied automatically. The
+    agent receives a rejection for every action it requests, effectively
+    preventing it from touching the filesystem or running commands.
+
+    Use this mode when you want to chat with Hermes and get suggestions without
+    allowing any modifications, or to temporarily lock down a session while you
+    review a plan before re-enabling permissions.
+  </Tab>
+</Tabs>
+
+## Changing the permission mode
+
+### Via settings
+
+Open `settings.json` (or the Settings UI and search **Hermes**) and set `hermes.permissionMode`:
+
+```json
+"hermes.permissionMode": "autoApprove"
+```
+
+The change applies to the current session immediately — you do not need to restart.
+
+### Via the Control Center
+
+Click the **Control Center** icon in the chat toolbar (or run **Hermes: Open Control Center** from the Command Palette) to open the embedded Hermes dashboard. The permissions section there mirrors the `hermes.permissionMode` setting and updates it in real time.
+
+## Approval options in manual mode
+
+When a permission card appears in `manual` mode, you see up to four response buttons depending on what options Hermes sends:
+
+| Button | What it does |
+|---|---|
+| **Allow once** | Approves this specific request. The next time the same action is requested, the card appears again. |
+| **Allow for this session** | Approves this request and all future requests of the same type for the duration of the current session. |
+| **Deny** | Rejects this specific request. The agent receives a denial and may adjust its approach. |
+| **Always deny** | Rejects this request and all future requests of the same type permanently. |
+
+Permission cards remain visible in the chat history after you respond, so you can scroll back and review what the agent was approved to do during a session. Cards are also persisted in local session storage, which means they reappear correctly if you reload the extension or VS Code window mid-session.
+
+<Warning>
+  `autoApprove` gives Hermes Agent permission to write files and run terminal
+  commands in your workspace **without prompting you first**. Only use this
+  mode in workspaces and environments you fully trust. Avoid it when working
+  with sensitive data, production configurations, or codebases where an
+  unreviewed write could cause harm.
+</Warning>

@@ -1,0 +1,176 @@
+---
+title: "Configure the Hermes Agent VS Code Extension"
+sidebarTitle: "Settings"
+description: "Full reference for all Hermes Agent extension settings — executable path, working directory, model defaults, display options, and session behavior."
+---
+
+You can open the Hermes Agent settings at any time by pressing `Ctrl+,` (or `Cmd+,` on macOS) and searching for **Hermes**, or by clicking the gear icon in the chat title bar. Changes to connection-related settings take effect immediately via an automatic reconnect — no manual restart required.
+
+## Settings reference
+
+<ParamField path="hermes.path" type="string" default='""'>
+  Path to the Hermes executable. Leave this empty to let the extension
+  auto-detect `hermes` from your system `PATH`. Set an absolute path here if
+  you have multiple Hermes installations or if the binary is not on `PATH`.
+
+  ```json
+  "hermes.path": "/usr/local/bin/hermes"
+  ```
+</ParamField>
+
+<ParamField path="hermes.cwd" type="string" default='""'>
+  Working directory used for all Hermes sessions. Leave empty to default to the
+  workspace root folder. Set an absolute path to pin sessions to a specific
+  directory regardless of which workspace you open.
+
+  ```json
+  "hermes.cwd": "/projects/my-app"
+  ```
+</ParamField>
+
+<ParamField path="hermes.profile" type="string" default='""'>
+  Hermes profile name passed to the CLI as `hermes --profile <name>`. Leave
+  empty to use the Hermes default profile. Profiles let you store separate
+  model, tool, and API-key configurations in your Hermes config file.
+
+  ```json
+  "hermes.profile": "work"
+  ```
+</ParamField>
+
+<ParamField path="hermes.permissionMode" type="string" default='"manual"'>
+  Controls how the extension responds when Hermes requests permission to
+  perform an action such as writing a file or running a terminal command.
+  Accepted values:
+
+  | Value | Behavior |
+  |---|---|
+  | `manual` | A permission card appears in chat for every request. You choose to approve or deny before the action proceeds. |
+  | `autoApprove` | All permission requests are approved automatically. The card is shown briefly and then dismissed. |
+  | `denyAll` | All permission requests are denied automatically. |
+
+  ```json
+  "hermes.permissionMode": "manual"
+  ```
+</ParamField>
+
+<ParamField path="hermes.showThoughts" type="boolean" default="true">
+  When `true`, the agent's internal reasoning steps ("thinking" tokens) are
+  displayed in the chat as a collapsible block above the final response. Set to
+  `false` to hide them and keep the chat output concise.
+</ParamField>
+
+<ParamField path="hermes.showToolCalls" type="boolean" default="true">
+  When `true`, a notification bubble appears in the chat whenever Hermes
+  invokes a tool (for example, reading a file or calling an MCP server). Set to
+  `false` to suppress these notifications.
+</ParamField>
+
+<ParamField path="hermes.contextAttachVisibility" type="string" default='"onNewSession"'>
+  Controls when the session memory picker is shown in the chat input bar.
+  The picker lets you carry prior session messages into a new conversation.
+  Accepted values:
+
+  | Value | Behavior |
+  |---|---|
+  | `onNewSession` | Show the picker after a session reset, until the first successful reply. |
+  | `always` | Always show the picker when prior session memory is available. |
+  | `never` | Never show the memory picker. |
+</ParamField>
+
+<ParamField path="hermes.models" type="array" default="[]">
+  A fallback list of models displayed in the Model dropdown when Hermes does
+  not return ACP `configOptions` with a model selector. Each item requires an
+  `id` (sent to the API) and a `name` (shown in the UI).
+
+  ```json
+  "hermes.models": [
+    { "id": "claude-sonnet", "name": "Claude Sonnet" },
+    { "id": "gpt-4o", "name": "GPT-4o" }
+  ]
+  ```
+</ParamField>
+
+<ParamField path="hermes.defaultModel" type="string" default='""'>
+  The model `id` from `hermes.models` that is pre-selected when the extension
+  starts. This setting only applies to the fallback model list — if Hermes
+  exposes its own model selector, the default is controlled by your Hermes
+  profile configuration instead.
+
+  ```json
+  "hermes.defaultModel": "claude-sonnet"
+  ```
+</ParamField>
+
+<ParamField path="hermes.agents" type="array" default="[]">
+  A list of named agent configurations available for quick switching from the
+  chat toolbar. Each entry can override the executable path, Hermes profile,
+  and working directory independently. Only `name` is required.
+
+  ```json
+  "hermes.agents": [
+    { "name": "Default", "profile": "" },
+    { "name": "Fast", "path": "/usr/local/bin/hermes", "profile": "fast" },
+    { "name": "Research", "profile": "research", "cwd": "/projects/research" }
+  ]
+  ```
+
+  See [Multiple Agents](/configuration/agents) for a full walkthrough.
+</ParamField>
+
+## Common configuration examples
+
+### Specify a custom executable and working directory
+
+```json
+{
+  "hermes.path": "/opt/homebrew/bin/hermes",
+  "hermes.cwd": "/projects/my-app"
+}
+```
+
+### Use a named profile with auto-approve permissions
+
+```json
+{
+  "hermes.profile": "dev",
+  "hermes.permissionMode": "autoApprove"
+}
+```
+
+### Define fallback models when Hermes exposes no model list
+
+```json
+{
+  "hermes.models": [
+    { "id": "claude-opus-4-5", "name": "Claude Opus 4.5" },
+    { "id": "claude-sonnet-4-5", "name": "Claude Sonnet 4.5" },
+    { "id": "gpt-4o", "name": "GPT-4o" }
+  ],
+  "hermes.defaultModel": "claude-sonnet-4-5"
+}
+```
+
+### Hide agent internals for a cleaner chat
+
+```json
+{
+  "hermes.showThoughts": false,
+  "hermes.showToolCalls": false
+}
+```
+
+### Always show the session memory picker
+
+```json
+{
+  "hermes.contextAttachVisibility": "always"
+}
+```
+
+<Note>
+  Changes to `hermes.path`, `hermes.cwd`, and `hermes.profile` are
+  connection-related settings. The extension automatically reconnects when you
+  save any of these values — you do not need to reload the window or restart
+  VS Code.
+</Note>

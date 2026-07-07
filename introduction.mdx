@@ -1,0 +1,69 @@
+---
+title: "Hermes Agent for VS Code: AI Coding Assistant"
+sidebarTitle: "Introduction"
+description: "FTR10 Hermes VSCode embeds Hermes Agent in your editor sidebar. Stream AI responses, apply code diffs, and control tools — without switching windows."
+---
+
+FTR10 Hermes VSCode is a VS Code extension that brings [Hermes Agent](https://hermes-agent.nousresearch.com) into your editor sidebar. It connects to a local `hermes acp` subprocess over the [Agent Client Protocol (ACP)](https://agentclientprotocol.com) and renders a full chat surface — streaming replies, syntax-highlighted code, one-click diff application, and model switching — right inside VS Code or Cursor. The agent sees your editor state in real time through an in-process MCP server, so it can read and write workspace files, inspect your diagnostics, and act on your cursor position without you copying anything by hand.
+
+<Note>
+  This extension is a UI front-end only. [Hermes Agent](https://hermes-agent.nousresearch.com) must be installed separately and `hermes` must be available on your `PATH` (or configured via `hermes.path`) before the extension can connect.
+</Note>
+
+## Key capabilities
+
+<CardGroup cols={2}>
+  <Card title="In-editor agent chat" icon="comments">
+    A sidebar conversation with real-time streaming Markdown, syntax-highlighted code blocks (marked + highlight.js, sanitized with DOMPurify), and click-to-insert snippets. No alt-tab required.
+  </Card>
+  <Card title="Editor Tools Bridge" icon="code">
+    An in-process MCP server registers `vscode-editor-tools` at session start. The agent can query your active file, open tabs, cursor position, selection, visible ranges, live diagnostics, and read/write workspace files.
+  </Card>
+  <Card title="Model picker with live pricing" icon="sliders">
+    Every model Hermes exposes is surfaced in a grouped dropdown with the per-token output cost shown inline. Switch provider and model in a single click.
+  </Card>
+  <Card title="Profile auto-discovery" icon="id-card">
+    Hermes profiles are detected from your config and exposed as a one-tap selector. No manual ID juggling.
+  </Card>
+  <Card title="Permission modes" icon="shield">
+    Choose `auto`, `confirm`, or `manual` to control how much the agent asks before it touches your system.
+  </Card>
+  <Card title="Diff viewer" icon="code-branch">
+    Proposed changes render as a real diff. Preview the original versus the proposed version, then apply to disk with a single command.
+  </Card>
+  <Card title="Multi-session tabs" icon="clock-rotate-left">
+    Run parallel conversations, persisted locally. Rename, delete, or revisit any session from the tab bar.
+  </Card>
+  <Card title="Context attachment" icon="paperclip">
+    Carry messages from a prior session into a new chat so the agent starts with background knowledge instead of a blank slate.
+  </Card>
+  <Card title="CodeLens" icon="magnifying-glass">
+    "Ask Hermes about this file" and "Explain this" appear above every function and class. Click once to pre-fill a prompt — no copy-pasting required.
+  </Card>
+  <Card title="Bilingual UI" icon="language">
+    The interface is fully available in English and 简体中文, following your VS Code display language automatically.
+  </Card>
+</CardGroup>
+
+## How it works
+
+When you open the Hermes sidebar, the extension spawns a `hermes acp` subprocess in the background. Communication between the extension and the agent flows over ACP — a lightweight protocol designed for tool-augmented agent sessions. At session start, the extension registers a `vscode-editor-tools` MCP server that the agent can call to inspect your workspace:
+
+- **Active editor** — file path, language ID, cursor position, selection, visible ranges, and full file content for files under 500 lines
+- **Open tabs** — labels, language IDs, and dirty/pinned state
+- **Diagnostics** — errors and warnings from your language servers
+- **File operations** — read and write access within the workspace boundary
+
+Agent responses stream back to the WebView as they arrive, so you see output character by character rather than waiting for a complete reply. Shell commands the agent emits are mirrored into an integrated terminal; file paths in messages are clickable and open directly in the editor.
+
+## Requirements
+
+Before installing the extension, confirm you have the following in place.
+
+| Requirement | Details |
+|---|---|
+| **VS Code** | Version 1.85 or later. The extension also works in **Cursor**. |
+| **Hermes Agent** | Installed and accessible as `hermes` on your `PATH`. Alternatively, set the full path in `hermes.path`. See [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com) for install instructions. |
+| **Node.js + Python** | Required for ACP dependencies. Both are auto-installed on first connect if missing. |
+
+On first connection the extension checks for the `agent-client-protocol` Python package and installs it automatically via `pip` if it is not present. If automatic installation fails, run `hermes acp --check` in a terminal to diagnose and resolve the issue manually.

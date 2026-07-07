@@ -1,0 +1,69 @@
+---
+title: "Install Hermes Agent Extension for VS Code"
+sidebarTitle: "Installation"
+description: "Install the FTR10 Hermes VSCode extension from the VS Code Marketplace, Cursor, or Open VSX in three steps."
+---
+
+Installing FTR10 Hermes VSCode takes less than a minute. The extension is available on the VS Code Marketplace, Open VSX, and directly inside the Cursor editor. Once installed, the extension auto-detects your Hermes Agent binary and installs any remaining ACP dependencies on first connect — no manual pip commands required in most cases.
+
+<Warning>
+  **Prerequisites — check these before installing:**
+  - [Hermes Agent](https://hermes-agent.nousresearch.com) must be installed and the `hermes` binary must be on your `PATH`. You can verify this by running `hermes --version` in a terminal. If `hermes` is installed somewhere non-standard, you can override the path later via the `hermes.path` setting.
+  - VS Code **1.85 or later** or **Cursor** (any recent version).
+</Warning>
+
+## Install the extension
+
+<Tabs>
+  <Tab title="VS Code">
+    1. Open the Extensions panel with `Ctrl+Shift+X` (Windows/Linux) or `Cmd+Shift+X` (macOS).
+    2. Search for **FTR10 Hermes VSCode** (or just **FTR10**).
+    3. Click **Install** on the result published by **FTR10**.
+
+    Prefer a direct link? Open the [VS Code Marketplace page](https://marketplace.visualstudio.com/items?itemName=FTR10.FTR10-Hermes-VSCode) in your browser and click **Install** — your editor will handle the rest.
+  </Tab>
+  <Tab title="Cursor">
+    1. Open the Extensions panel inside Cursor (same `Ctrl+Shift+X` shortcut).
+    2. Search for **FTR10 Hermes VSCode**.
+    3. Click **Install**.
+
+    Cursor pulls extensions from Open VSX. If the search returns no results, install from the [Open VSX listing](https://open-vsx.org/extension/FTR10/FTR10-Hermes-VSCode) directly.
+  </Tab>
+  <Tab title="Open VSX">
+    1. Visit [open-vsx.org/extension/FTR10/FTR10-Hermes-VSCode](https://open-vsx.org/extension/FTR10/FTR10-Hermes-VSCode).
+    2. Click **Download** to get the `.vsix` file.
+    3. In VS Code or Cursor, open the Command Palette (`Ctrl+Shift+P`) and run **Extensions: Install from VSIX…**, then select the downloaded file.
+  </Tab>
+</Tabs>
+
+## Verify installation
+
+After installing, confirm everything is wired up correctly.
+
+1. Open a terminal and run:
+   ```bash
+   hermes --version
+   ```
+   If this fails, Hermes Agent is not on your `PATH`. Set the full path using the `hermes.path` setting before continuing.
+
+2. Click the **Hermes Agent** icon in the Activity Bar (the left-side icon strip). The Hermes sidebar should open.
+
+3. Watch the status pill at the top of the panel. It will cycle through **Connecting…** and **Initializing…** before turning green and reading **Ready**. The first initialization can take up to 1–3 minutes while plugin dependencies load.
+
+Once you see **Ready**, type a message and press **Enter** to confirm the connection is live.
+
+## ACP dependencies
+
+The extension communicates with the agent over the Agent Client Protocol (ACP), which requires the `agent-client-protocol` Python package. On first connect, the extension detects whether the package is present and runs `pip install agent-client-protocol==0.9.0` automatically if it is missing.
+
+If automatic installation fails — for example, because your Python environment uses a virtual env or a non-standard pip location — run the following command in a terminal to diagnose the issue:
+
+```bash
+hermes acp --check
+```
+
+This command reports exactly which dependencies are missing and what steps are needed to resolve them.
+
+<Tip>
+  Use the **Wrench menu → Environment detection** (the wrench icon in the Hermes toolbar) to run a full end-to-end scan of your Hermes install — `hermes --version`, `hermes acp --check`, and dependency status — all from inside VS Code. A progress indicator shows you where the scan is up to, and the results surface any actionable issues directly in the panel.
+</Tip>

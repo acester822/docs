@@ -1,0 +1,48 @@
+---
+title: "Switch AI Models and Hermes Profiles in VS Code"
+sidebarTitle: "Models & Profiles"
+description: "Browse available AI models with live per-token pricing, switch providers instantly, and select Hermes profiles — all from the chat toolbar."
+---
+
+The chat toolbar gives you direct control over which AI model Hermes uses and which profile it runs under. The **Model** dropdown and **Profile** selector live in the toolbar and update live — no need to edit configuration files or restart VS Code manually.
+
+## Choosing a model
+
+The model dropdown auto-populates from Hermes via ACP. The extension first requests the model list from the `model.options` endpoint; if that returns nothing, it falls back to `session/set_model` from the native session API. The result is a grouped list that refreshes each time you connect.
+
+**What the list shows:**
+
+- Models are grouped by provider (for example, Anthropic, OpenAI, and any custom gateway you have configured).
+- Each model row displays the **output cost per 1M tokens** so you can compare pricing at a glance.
+- The active model is highlighted and the containing group is listed first.
+- Long lists scroll inside the panel without clipping.
+
+To switch models, click the **Model** button in the toolbar, then click the model you want. The session restarts immediately with the new model active.
+
+<Note>
+  Switching models resets the agent's in-memory context for the current session. The chat history is preserved locally and flagged with a **local-history** banner, but the agent does not retain it. Use context attachment after the reset to carry prior messages into the new session.
+</Note>
+
+## Hermes profiles
+
+Profiles are auto-discovered by running `hermes profile list` when the extension starts. Any profiles defined in your Hermes configuration appear in the **Profile** dropdown in the toolbar — no manual ID juggling required.
+
+Click the **Profile** selector to open the list and click a profile to switch to it. Like a model switch, changing the profile restarts the agent session.
+
+<Tip>
+  Set the `hermes.profile` setting to make a profile the default every time the extension starts. If you work across multiple Hermes configurations, use `hermes.agents` to define named agent configurations (each with its own path, profile, and working directory) and switch between them from the toolbar.
+</Tip>
+
+## Fallback model list
+
+If Hermes is not running or does not expose models via ACP, the extension falls back to a static list you define in your VS Code settings. Configure it by adding the following to your `settings.json`:
+
+```json
+"hermes.models": [
+  { "id": "claude-sonnet", "name": "Claude Sonnet" },
+  { "id": "gpt-4o", "name": "GPT-4o" }
+],
+"hermes.defaultModel": "claude-sonnet"
+```
+
+The `hermes.defaultModel` value must match an `id` from the `hermes.models` array. The fallback list is only used when ACP does not return a model catalog; it is replaced by the live list as soon as a connection is established.

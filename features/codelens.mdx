@@ -1,0 +1,37 @@
+---
+title: "Ask Hermes About Code Directly from the Editor"
+sidebarTitle: "CodeLens"
+description: "Use CodeLens actions above functions and files to instantly ask Hermes Agent questions about your code without leaving the editor."
+---
+
+CodeLens actions appear as clickable text directly above your code in the editor. Hermes adds two of these actions — one at the top of every file and one above each function and class — so you can send targeted questions to the agent with a single click, without writing a prompt from scratch.
+
+## Available CodeLens actions
+
+### "Ask Hermes about this file"
+
+This action appears at the very top of every file you open. Clicking it pre-fills the chat input with a prompt asking Hermes about the file's overall purpose, structure, key components, and any potential risks or issues. The prompt includes the active file path so Hermes knows exactly which file to analyze.
+
+### "Explain this" / "Explain this class"
+
+These actions appear above every `function` and `class` declaration in your file. Clicking **Explain this** above a function pre-fills a prompt asking Hermes to explain what that specific function does, how it works, and what parameters or return values are involved. **Explain this class** works the same way for class declarations. Both prompts include the symbol name and its location in the file.
+
+## How to use them
+
+1. Open any source file. The CodeLens actions appear automatically above applicable code blocks.
+2. Click the action you want (for example, **💬 Ask Hermes about this file** or **🤖 Explain this**).
+3. The chat panel opens (or focuses if it is already open) with the prompt pre-filled in the input box.
+4. Add any additional context or follow-up question, then press **Enter** to send.
+
+## Command Palette equivalents
+
+You can trigger the same actions without CodeLens using the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
+
+| Command | Command ID | Equivalent action |
+|---|---|---|
+| **Hermes: Ask about this file** | `hermes.askAboutFile` | Same as the file-level CodeLens at the top of the active file |
+| **Hermes: Explain this function** | `hermes.explainFunction` | Same as the symbol-level CodeLens above a function or class |
+
+<Tip>
+  Combine CodeLens with selection insertion for richer context. Click **Explain this** to pre-fill the prompt, then select a specific section of the function body, right-click, and choose **Hermes: Insert Selection into Chat** to append the exact lines you want Hermes to focus on before you send.
+</Tip>

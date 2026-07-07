@@ -1,0 +1,46 @@
+---
+title: "Editor Tools Bridge: Give Hermes Your Editor Context"
+sidebarTitle: "Editor Tools"
+description: "The Editor Tools Bridge connects Hermes Agent to your VS Code workspace — letting the agent read files, check diagnostics, and understand your cursor position."
+---
+
+The Editor Tools Bridge is an in-process MCP server called `vscode-editor-tools` that starts automatically when you begin a Hermes session. The agent queries it at runtime to understand your editor state — what file you have open, where your cursor is, what errors your language server is reporting — without you having to copy-paste anything.
+
+## What the agent can see
+
+The bridge exposes the following context to Hermes:
+
+| Category | Details |
+|---|---|
+| **Active editor** | File path, language ID, cursor line and character, current selection, visible ranges, full file content (for files under 500 lines) |
+| **Open tabs** | Labels, file paths, language IDs, dirty (unsaved) state, pinned state |
+| **Diagnostics** | Errors and warnings from every language server active in the workspace, including severity, message, file, and line range |
+| **Workspace files** | Read and write any file within the open workspace folders |
+| **Workspace structure** | Directory tree, workspace folder paths, and default language setting |
+| **Git status** | Current branch, staged changes, and working-tree changes (via the built-in Git extension) |
+| **Symbol outline** | Classes, functions, and variables for any file (via the document symbol provider) |
+| **References and definitions** | Find usages and jump-to-definition results for the symbol under the cursor |
+
+<Note>
+  Files over 500 lines send only metadata (path, language ID, and line count) rather than full content. The agent uses the metadata to understand the file's context and can request specific line ranges with the `read_file` tool if it needs a particular section.
+</Note>
+
+## How context is used
+
+The agent automatically queries these tools when it needs editor context to answer your question or carry out a task. You do not need to configure anything or manually trigger the bridge — as soon as a session starts, the `vscode-editor-tools` server is registered and available to Hermes.
+
+For example, when you ask Hermes to explain a function, it uses `get_active_file` to read the current file and `get_cursor_context` to understand what code surrounds your cursor. When you ask about errors in your project, it calls `get_diagnostics` to fetch the live list from your language servers.
+
+## File operations
+
+Beyond reading context, the agent can read and write files inside your workspace. The tools involved are:
+
+- **`read_file`** — reads any workspace file by path, with optional start and end line arguments for large files.
+- **`apply_diff`** — writes new content to a file immediately, without a review step.
+- **`propose_diff`** — shows the proposed change as a visual diff with inline decorations (red for removed lines, green for added lines) before anything is saved, and waits for your approval.
+
+Whether the agent uses `apply_diff` or `propose_diff` — and whether it asks for confirmation before doing so — is controlled by the **`hermes.permissionMode`** setting (`auto` / `confirm` / `manual`). See the permissions documentation for the full breakdown.
+
+<Warning>
+  In `manual` permission mode, any write operation requires your explicit approval before it proceeds. If you are running in `auto` mode, the agent can write files without prompting. Review your `hermes.permissionMode` setting before granting broad file access in sensitive workspaces.
+</Warning>

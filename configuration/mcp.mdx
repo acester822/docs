@@ -1,0 +1,108 @@
+---
+title: "Forward MCP Servers to Hermes Agent"
+sidebarTitle: "MCP Servers"
+description: "Hermes Agent reads your Cursor and VS Code MCP server configurations and forwards them automatically when starting a new session."
+---
+
+When you start a Hermes session, the extension automatically reads your editor's MCP server configuration files and forwards every enabled server to Hermes as part of the `session/new` request. You do not need to duplicate your MCP setup — define your servers once in your editor config and Hermes picks them up automatically.
+
+## Where MCP configs are read from
+
+The extension checks four locations in the following order. Later entries override servers with the same name from earlier entries, so workspace-level configs take precedence over global configs.
+
+| Location | Scope |
+|---|---|
+| `~/.cursor/mcp.json` | Global Cursor MCP configuration |
+| `~/.vscode/mcp.json` | Global VS Code MCP configuration |
+| `<workspace>/.cursor/mcp.json` | Workspace-level Cursor MCP configuration |
+| `<workspace>/.vscode/mcp.json` | Workspace-level VS Code MCP configuration |
+
+All discovered and enabled servers are merged into a single list and passed to Hermes when the session starts.
+
+The extension also substitutes the following variables in `command`, `args`, `env`, and `url` fields before forwarding:
+
+| Variable | Resolves to |
+|---|---|
+| `${workspaceFolder}` | The session working directory |
+| `${userHome}` | Your home directory |
+| `${env:NAME}` | The value of environment variable `NAME` |
+
+## Config format
+
+Each `mcp.json` file uses the standard MCP server format. Place the file at one of the locations above and the extension discovers it automatically on the next session start.
+
+### stdio server (most common)
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "my-mcp-server"]
+    }
+  }
+}
+```
+
+### stdio server with environment variables
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "my-mcp-server", "--root", "${workspaceFolder}"],
+      "env": {
+        "API_KEY": "${env:MY_API_KEY}"
+      }
+    }
+  }
+}
+```
+
+### HTTP or SSE server
+
+```json
+{
+  "mcpServers": {
+    "remote-server": {
+      "type": "http",
+      "url": "https://my-mcp-host.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:MCP_TOKEN}"
+      }
+    }
+  }
+}
+```
+
+### Disabling a server without removing it
+
+Set `"disabled": true` on any server entry and the extension skips it when building the forwarded list.
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "my-mcp-server"],
+      "disabled": true
+    }
+  }
+}
+```
+
+## Verification
+
+After you start a session, confirm your MCP servers were forwarded correctly:
+
+1. Send a message that would trigger one of your MCP servers.
+2. If `hermes.showToolCalls` is enabled, a tool call notification appears in the chat when Hermes invokes the server.
+3. If you see no tool calls and expect some, open the extension logs via the chat toolbar → **More options → Logs** and look for `session/new` to inspect the `mcpServers` payload that was sent.
+
+<Note>
+  MCP configurations are read once at session start. If you add, remove, or
+  modify a server in your `mcp.json` after a session is already running, you
+  must start a new session for the change to take effect. Use the **+ New Chat**
+  button in the toolbar or run **Hermes: New Chat** from the Command Palette.
+</Note>

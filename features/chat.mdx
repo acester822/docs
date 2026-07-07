@@ -1,0 +1,66 @@
+---
+title: "Chat with Your Code Using Hermes Agent"
+sidebarTitle: "Chat"
+description: "Use the Hermes Agent chat panel in VS Code to ask questions, get code suggestions, and apply changes — all with real-time streaming responses."
+---
+
+The Hermes Agent chat panel lives directly in your VS Code sidebar, giving you a full conversation interface without switching windows. You can ask questions about your code, request refactors, get explanations, and watch answers stream in with full Markdown formatting — all while your editor stays open in front of you.
+
+## Opening the chat
+
+Open the chat panel in either of two ways:
+
+- Click the **Hermes Agent** icon in the Activity Bar (left sidebar).
+- Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) and run **Hermes: Open Chat**.
+
+<Note>
+  Hermes must show a green **Ready** status pill in the toolbar before you can send messages. If you see **Connecting…**, wait a moment or use the wrench menu to run environment detection.
+</Note>
+
+## Sending messages
+
+Type your message in the input box at the bottom of the panel and press **Enter** to send. To cancel a streaming response at any point, click the **Stop** button that appears during generation.
+
+<Tip>
+  Use **Shift+Enter** to insert a newline in your message without sending it. This is useful for multi-line prompts, code snippets, or numbered lists of instructions.
+</Tip>
+
+## Streaming responses
+
+Responses stream in real time and are rendered as Markdown with syntax-highlighted code blocks (powered by marked and highlight.js, sanitized with DOMPurify). The panel automatically scrolls to follow new output; scroll up manually at any time to pause auto-scroll, and it resumes after five seconds of inactivity while the response is still streaming.
+
+File paths that Hermes mentions in a response are rendered as clickable links — click any path to open that file directly in the editor.
+
+## @file attachment
+
+To include a workspace file in your conversation, type `@` in the input box. A file picker opens, letting you search and select any file in your workspace. The selected file is attached to your next message and sent as context to the agent.
+
+## Code insertion
+
+Every code block in a Hermes response has a click-to-insert action. Click the code block to insert that snippet at your current cursor position in the active editor — no copy-paste required.
+
+## Shell commands
+
+When Hermes suggests a shell command as part of a response, that command is automatically mirrored to an integrated terminal in your workspace. You can review and run it there without leaving VS Code.
+
+## Insert selection into chat
+
+To send code you're already looking at to Hermes:
+
+1. Select the code in your editor.
+2. Right-click and choose **Hermes: Insert Selection into Chat**.
+
+The selected text is inserted into the chat input box so you can add context or a question before sending.
+
+## Thoughts and tool calls
+
+Two optional visibility settings control how much of Hermes's internal reasoning you see:
+
+- **`hermes.showThoughts`** — shows the agent's reasoning process as collapsible "thought" bubbles.
+- **`hermes.showToolCalls`** — shows notifications when the agent calls an editor tool (such as reading a file or checking diagnostics).
+
+Both settings default to `true`. Disable either in **Settings** (`Ctrl+,` → search **Hermes**) to keep the chat panel cleaner.
+
+## Token usage ring
+
+A small ring icon in the chat toolbar shows your current token usage as a percentage of the session's context window. The ring color shifts from neutral to amber to red as usage climbs. Hover over the ring to see exact token counts and a percentage label.

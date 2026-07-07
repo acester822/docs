@@ -1,0 +1,96 @@
+{
+  "projectType": "frontend",
+  "projectName": "Hermes Agent for VS Code",
+  "projectDescription": "A VS Code extension that brings Hermes Agent directly into your editor — chat with your code, apply diffs, and control the agent without leaving VS Code.",
+  "theme": "luma",
+  "primaryColor": "#909090",
+  "lightColor": "#222222",
+  "darkColor": "#cacaca",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/chat",
+              "features/editor-tools",
+              "features/models-profiles",
+              "features/diffs",
+              "features/sessions",
+              "features/codelens"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/settings",
+              "configuration/agents",
+              "configuration/mcp",
+              "configuration/permissions"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/commands",
+              "reference/troubleshooting",
+              "reference/changelog"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "In-editor AI chat with real-time streaming responses",
+    "Editor Tools Bridge — agent reads active file, open tabs, diagnostics, and cursor context",
+    "Model picker with live per-token pricing grouped by provider",
+    "Hermes profile auto-discovery and quick-switch selector",
+    "Permission modes: manual, auto-approve, deny-all",
+    "Diff viewer — preview proposed code changes before applying",
+    "Multi-session tabs with local persistence and context attachment",
+    "CodeLens actions: Ask Hermes about file, Explain this function",
+    "MCP server forwarding from Cursor/VS Code config",
+    "Environment detection (L0–L5) with auto-install of ACP dependencies",
+    "Bilingual UI: English + Simplified Chinese"
+  ],
+  "publicApiSurface": [
+    "hermes.newChat — Start a new conversation",
+    "hermes.openChat — Open the chat sidebar",
+    "hermes.sendSelection — Insert editor selection into chat",
+    "hermes.askAboutFile — Pre-fill prompt about the active file",
+    "hermes.explainFunction — Pre-fill prompt to explain a symbol",
+    "hermes.showDiff — Open visual diff of proposed changes",
+    "hermes.previewDiff — Preview changes as a diff",
+    "hermes.applyDiff — Apply proposed changes to disk",
+    "hermes.openControlCenter — Open the embedded Hermes dashboard",
+    "hermes.setApiKey — Store API key securely",
+    "hermes.detectEnvironment — Scan for Hermes installation",
+    "hermes.configureEnvironment — Configure detected environment",
+    "hermes.openSettings — Open extension settings",
+    "hermes.checkUpdate — Check for extension updates",
+    "hermes.openLogs — View ACP connection logs",
+    "hermes.reloadExtension — Reload the extension",
+    "hermes.reloadSession — Reload the current session",
+    "hermes.path setting — Path to the Hermes executable",
+    "hermes.cwd setting — Working directory for sessions",
+    "hermes.profile setting — Hermes profile name",
+    "hermes.permissionMode setting — manual | autoApprove | denyAll",
+    "hermes.showThoughts setting — Show agent reasoning",
+    "hermes.showToolCalls setting — Show tool call notifications",
+    "hermes.contextAttachVisibility setting — Session memory picker visibility",
+    "hermes.models setting — Fallback model list",
+    "hermes.defaultModel setting — Default model ID",
+    "hermes.agents setting — Named agent configurations"
+  ]
+}
